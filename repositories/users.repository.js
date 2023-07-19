@@ -12,6 +12,21 @@ class UserRepository {
     await Users.create({ email, password: hashPassword, name, phone, address });
     return;
   };
+  //회원 정보 수정 api
+  updateUser = async (userId, hashPassword, phone, address) => {
+    const updateValues = {};
+    if (hashPassword) updateValues.password = hashPassword;
+    if (phone) updateValues.phone = phone;
+    if (address) updateValues.address = address;
+
+    await Users.update(updateValues, { where: { userId } });
+    return;
+  };
+  //회원 탈퇴 api
+  deleteUser = async (userId) => {
+    await Users.destroy({ where: { UserId: userId } });
+    return;
+  };
 }
 
 module.exports = UserRepository;

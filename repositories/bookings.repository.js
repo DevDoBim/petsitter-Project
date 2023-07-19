@@ -4,10 +4,8 @@ class BookingRepository {
   getBooking = async () => {
     await Bookings.findAll({});
   };
-  createBooking = async (startDay, endDay) => {
-    const createBooking = await Bookings.create(startDay, endDay);
-    console.log('rep', createBooking);
-    return createBooking;
+  createBooking = async (userId, petSitterId, startDay, endDay) => {
+    return await Bookings.create(userId, petSitterId, startDay, endDay);
   };
   updateBooking = async () => {};
   deleteBooking = async () => {};

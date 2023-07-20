@@ -1,22 +1,30 @@
 const { Bookings, Petsitters } = require('../models');
 
 class BookingRepository {
-  getBooking = async () => {
-    await Bookings.findAll({});
+  //유저 예약 조회 API
+  getBooking = async (userId) => {
+    return await Bookings.findAll({ where: { userId }, order: [['createdAt', 'DESC']] });
   };
-
-  findBooking = async (petSitterId, userId) => {
-    return await Bookings.findOne({ where: { petSitterId, userId } });
+  //펫시터id로 조회
+  findSitter = async (petSitterId) => {
+    return await Petsitters.findByPk(petSitterId);
   };
+  // 예약 생성 API
   createBooking = async (userId, petSitterId, startTime, endTime) => {
     return await Bookings.create({ userId, petSitterId, startTime, endTime });
   };
-  updateBooking = async (bookingId, startTime, endTime) => {
-    const booking = await Bookings.findByPk(bookingId);
-    return await booking.update({ startTime, endTime }, { where: { bookingId } });
+  //예약 id로 조회
+  getBookingById = async (bookingId) => {
+    return await Bookings.findByPk(bookingId);
   };
+  //예약 수정 API
+  updateBooking = async (bookingId, startTime, endTime) => {
+    await Bookings.update({ startTime, endTime }, { where: { bookingId } });
+    return await Bookings.findByPk(bookingId);
+  };
+  //예약 취소 API
   deleteBooking = async (bookingId) => {
-    return await Bookings.destroy({ where: { bookingId } });
+    await Bookings.destroy({ where: { bookingId } });
   };
 }
 module.exports = BookingRepository;

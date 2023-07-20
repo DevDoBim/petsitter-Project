@@ -21,11 +21,11 @@ class ReviewService {
   };
   //리뷰 수정 API
   updateReview = async (userId, reviewId, content, rating) => {
-    const updatedreview = await this.reviewRepository.getReviewById(reviewId);
-    if (!updatedreview) {
+    const updatedReview = await this.reviewRepository.getReviewById(reviewId);
+    if (!updatedReview) {
       throw new ApiError('리뷰가 존재하지 않습니다.', 404);
     }
-    if (userId !== updatedreview.userId) {
+    if (userId !== updatedReview.userId) {
       throw new ApiError('리뷰 수정 권한이 없습니다.', 403);
     }
 
@@ -33,11 +33,11 @@ class ReviewService {
   };
   //리뷰 삭제 API
   deleteReview = async (userId, reviewId) => {
-    const deletedreview = await this.reviewRepository.getReviewById(reviewId);
-    if (!deletedreview) {
+    const deletedReview = await this.reviewRepository.getReviewById(reviewId);
+    if (!deletedReview) {
       throw new ApiError('리뷰가 존재하지 않습니다.', 404);
     }
-    if (userId !== deletedreview.userId) {
+    if (userId !== deletedReview.userId) {
       throw new ApiError('리뷰 삭제 권한이 없습니다.', 403);
     }
 

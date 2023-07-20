@@ -9,7 +9,7 @@ class UserRepository {
   createUser = async (email, hashPassword, name, phone, address) => {
     await Users.create({ email, password: hashPassword, name, phone, address });
   };
-  //회원 정보 수정 api
+  //회원 정보 수정 API
   updateUser = async (userId, hashPassword, phone, address) => {
     const updateValues = {};
     if (hashPassword) updateValues.password = hashPassword;
@@ -18,7 +18,7 @@ class UserRepository {
 
     await Users.update(updateValues, { where: { userId } });
   };
-  //회원 탈퇴 api
+  //회원 탈퇴 API
   deleteUser = async (userId) => {
     await Users.destroy({ where: { UserId: userId } });
   };

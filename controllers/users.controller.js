@@ -36,7 +36,7 @@ class UsersController {
       return res.status(err.status || 500).json({ message: err.message });
     }
   };
-  //회원 정보 조회 api
+  //회원 정보 조회 API
   getUser = async (req, res) => {
     try {
       const user = res.locals.user;
@@ -47,7 +47,7 @@ class UsersController {
       return res.status(err.status || 500).json({ message: err.message });
     }
   };
-  //회원 정보 수정 api
+  //회원 정보 수정 API
   updateUser = async (req, res) => {
     try {
       const { userId, password } = res.locals.user;
@@ -65,7 +65,7 @@ class UsersController {
       return res.status(err.status || 500).json({ message: err.message });
     }
   };
-  //회원 탈퇴 api
+  //회원 탈퇴 API
   deleteUser = async (req, res) => {
     try {
       const { userId, password } = res.locals.user;

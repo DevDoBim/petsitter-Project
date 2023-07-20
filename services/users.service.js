@@ -46,7 +46,7 @@ class UserService {
 
     return { loginToken };
   };
-  //회원 정보 수정 api
+  //회원 정보 수정 API
   updateUser = async (userId, password, existPassword, newPassword, phone, address) => {
     const match = await bcrypt.compare(existPassword, password);
     if (!match) {
@@ -63,7 +63,7 @@ class UserService {
 
     await this.userRepository.updateUser(userId, hashPassword, phone, address);
   };
-  //회원 탈퇴 api
+  //회원 탈퇴 API
   deleteUser = async (userId, password, existPassword) => {
     const match = await bcrypt.compare(existPassword, password);
     if (!match) {

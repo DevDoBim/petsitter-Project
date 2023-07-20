@@ -6,13 +6,11 @@ class BookingService {
     return getBooking;
   };
   createBooking = async (userId, petSitterId, startTime, endTime) => {
-    const createBooking = await this.bookingRepository.createBooking(
-      userId,
-      petSitterId,
-      startTime,
-      endTime
-    );
-    return createBooking;
+    const isExistPetSitter = await this.bookingRepository.findPetSitterId();
+    if (!isExistPetSitter) {
+      throw new Error('현재 예약 가능한 펫시터가 없습니다.');
+    }
+    return await this.bookingRepository.createBooking(userId, petSitterId, startTime, endTime);
   };
   updateBooking = async () => {};
   deleteBooking = async () => {};

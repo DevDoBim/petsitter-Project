@@ -2,7 +2,7 @@ const BookingService = require('../services/bookings.services');
 
 class BookingController {
   bookingService = new BookingService();
-  //유저 예약 조회 API
+  //유저id로 예약 조회 API
   getBooking = async (req, res) => {
     try {
       const { userId } = res.locals.user;

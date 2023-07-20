@@ -13,6 +13,11 @@ class BookingService {
     if (!isExistSitter) {
       throw new ApiError('펫시터가 존재하지 않습니다.', 404);
     }
+    const isExistBooking = await this.bookingRepository.findExistBooking(petSitterId, startTime, endTime);
+    if (isExistBooking) {
+      throw new ApiError('이미 예약된 시간대입니다.', 409);
+    }
+
     return await this.bookingRepository.createBooking(userId, petSitterId, startTime, endTime);
   };
   //예약 수정 API

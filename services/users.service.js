@@ -22,7 +22,7 @@ class UserService {
 
     const isExistUser = await this.userRepository.findUser(email);
     if (isExistUser) {
-      throw new ApiError('중복된 이메일입니다.', 412);
+      throw new ApiError('중복된 이메일입니다.', 409);
     }
 
     //암호화

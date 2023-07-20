@@ -1,4 +1,5 @@
 const { Bookings, Petsitters } = require('../models');
+const { Op } = require('sequelize');
 
 class BookingRepository {
   //유저 예약 조회 API
@@ -8,6 +9,16 @@ class BookingRepository {
   //펫시터id로 조회
   findSitter = async (petSitterId) => {
     return await Petsitters.findByPk(petSitterId);
+  };
+  //예약 시간 중복 조회
+  findExistBooking = async (petSitterId, startTime, endTime) => {
+    return await Bookings.findOne({
+      where: {
+        petSitterId,
+        startTime: { [Op.lt]: endTime },
+        endTime: { [Op.gt]: startTime },
+      },
+    });
   };
   // 예약 생성 API
   createBooking = async (userId, petSitterId, startTime, endTime) => {

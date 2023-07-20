@@ -29,6 +29,11 @@ class BookingService {
     if (userId !== updatedBooking.userId) {
       throw new ApiError('예약 수정 권한이 없습니다.', 403);
     }
+    const petSitterId = updatedBooking.petSitterId;
+    const isExist = await this.bookingRepository.findExist(petSitterId, bookingId, startTime, endTime);
+    if (isExist) {
+      throw new ApiError('이미 예약된 시간대입니다.', 409);
+    }
     return await this.bookingRepository.updateBooking(bookingId, startTime, endTime);
   };
   //예약 취소 API

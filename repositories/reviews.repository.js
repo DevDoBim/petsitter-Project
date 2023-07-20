@@ -1,4 +1,4 @@
-const { Reviews} = require('../models');
+const { Reviews } = require('../models');
 
 class ReviewRepository {
   // # 리뷰 조회 API
@@ -21,6 +21,11 @@ class ReviewRepository {
 
     await Reviews.update(updateReviewData, { where: { userId, reviewId } });
     return;
+  };
+
+  // # 리뷰 삭제 API
+  deleteReview = async (userId, reviewId) => {
+    await Reviews.destroy({ where: { userId, reviewId } });
   };
 }
 

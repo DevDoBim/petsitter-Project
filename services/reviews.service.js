@@ -44,6 +44,11 @@ class ReviewService {
     }
     await this.reviewRepository.updateReview(userId, reviewId, content, rating);
   };
+
+  // # 리뷰 삭제 API
+  deleteReview = async(userId, reviewId) =>{
+    await this.reviewRepository.deleteReview(userId, reviewId);
+  }
 }
 
 module.exports = ReviewService;

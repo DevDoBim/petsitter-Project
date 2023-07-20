@@ -45,7 +45,17 @@ class ReviewsController {
   };
 
   // # 리뷰 삭제 API
-  
+  deleteReview = async (req, res) => {
+    try {
+      const { userId } = res.locals.user;
+      const { reviewId } = req.params;
+      await this.reviewService.deleteReview(userId, reviewId);
+      return res.status(201).json({ message: '리뷰가 삭제되었습니다.' });
+    } catch (error) {
+      console.log(error);
+      return res.status(400).json({ errorMessage: '리뷰 삭제에 실패하였습니다.' });
+    }
+  };
 }
 
 module.exports = ReviewsController;

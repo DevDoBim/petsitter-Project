@@ -1,85 +1,75 @@
 const BookingService = require('../services/bookings.services');
+
 class BookingController {
   bookingService = new BookingService();
-
-  //예약 조회
+  //유저 예약 조회 API
   getBooking = async (req, res) => {
-    // const userId = ?
-    // const petSitterId = ?
+    try {
+      const { userId } = res.locals.user;
 
-    const getBooking = await this.bookingService.getBooking();
-    if (!getBooking) {
-      res.status(400).json({ message: '예약 내역이 존재하지 않습니다!' });
+      const bookings = await this.bookingService.getBooking(userId);
+
+      return res.status(200).json({ bookings });
+    } catch (err) {
+      console.log(err);
+      return res.status(err.status || 500).json({ message: err.message });
     }
-    res.status(200).json({ message: getBooking });
   };
-  // 예약 생성
+  // 예약 생성 API
   createBooking = async (req, res) => {
-    const { petSitterId } = req.params;
-    console.log(petSitterId);
-    const userId = res.locals.user.userId;
-    console.log(userId);
+    try {
+      const { userId } = res.locals.user;
+      const { petSitterId } = req.params;
+      const { startTime, endTime } = req.body;
 
-    const { startTime, endTime } = req.body;
-    console.log(startTime);
-    console.log(endTime);
-    // try {
-    if (!startTime || !endTime) {
-      return res.status(400).json({ message: '와요 방문일자를 입력해주세요.' });
-    }
-    if (!startTime) {
-      return res.status(400).json({ message: '시작 날짜가 입력되지 않았습니다.' });
-    }
-    if (!endTime) {
-      return res.status(400).json({ message: '종료 날짜가 입력되지 않았습니다.' });
-    }
-    if (startTime >= endTime) {
-      return res.status(400).json({ message: '종료 날짜는 시작 날짜보다 이후여야 합니다.' });
-    }
-    if (!petSitterId) {
-      return res.status(402).json({
-        message: '예약이 불가능한 펫시터입니다. 다른 날짜 또는 다른 펫시터를 선택해주세요.',
-      });
-    }
+      if (!startTime || !endTime) {
+        return res.status(412).json({ message: '시작, 종료 시간을 입력해주세요' });
+      }
+      if (startTime >= endTime) {
+        return res.status(412).json({ message: '종료 날짜는 시작 날짜보다 이후여야 합니다.' });
+      }
 
-    const bookingData = await this.bookingService.createBooking(
-      userId,
-      petSitterId,
-      startTime,
-      endTime
-    );
-    console.log('cont', bookingData);
+      const bookingData = await this.bookingService.createBooking(userId, petSitterId, startTime, endTime);
 
-    res.status(200).json({ message: '예약되었습니다!', bookingData });
-    // } catch (err){
-    //   res.status(500).json({
-    //     message: '예약 중 문제가 발생했습니다. 문제가 반복 될 경우 고객센터로 문의주세요',
-    //   });
-    // }
+      return res.status(201).json({ message: '예약되었습니다!', bookingData });
+    } catch (err) {
+      console.log(err);
+      return res.status(err.status || 500).json({ message: err.message });
+    }
   };
-  //예약 수정
+  //예약 수정 API
   updateBooking = async (req, res) => {
-    const { bookingId } = req.params;
-    const { startTime, endTime } = req.body;
+    try {
+      const { userId } = res.locals.user;
+      const { bookingId } = req.params;
+      const { startTime, endTime } = req.body;
 
-    if (!bookingId) {
-      return res.status(400).json({ message: '예약이 존재하지 않습니다.' });
+      if (!startTime || !endTime) {
+        return res.status(412).json({ message: '시작, 종료 시간을 입력해주세요' });
+      }
+      if (startTime >= endTime) {
+        return res.status(412).json({ message: '종료 날짜는 시작 날짜보다 이후여야 합니다.' });
+      }
+      const updateDate = await this.bookingService.updateBooking(userId, bookingId, startTime, endTime);
+
+      return res.status(200).json({ message: '예약이 수정되었습니다!', updateDate });
+    } catch (err) {
+      console.log(err);
+      return res.status(err.status || 500).json({ message: err.message });
     }
-    if (!startTime || !endTime) {
-      res.status(400).json({
-        message: '수정할 예약 날짜를 입력해주세요.',
-      });
-    }
-    const updateDate = await this.bookingService.updateBooking(bookingId, startTime, endTime);
-    res.status(200).json({ message: '예약이 수정되었습니다', updateDate });
   };
+  //예약 취소 API
+  deleteBooking = async (req, res) => {
+    try {
+      const { userId } = res.locals.user;
+      const { bookingId } = req.params;
 
-  //예약 취소
-  deleteBooking = async (req, res, next) => {
-    const { bookingId } = req.params;
-
-    await this.bookingService.deleteBooking(bookingId);
-    res.status(200).json({ message: '예약이 취소되었습니다.' });
+      await this.bookingService.deleteBooking(userId, bookingId);
+      return res.status(200).json({ message: '예약이 취소되었습니다.' });
+    } catch (err) {
+      console.log(err);
+      return res.status(err.status || 500).json({ message: err.message });
+    }
   };
 }
 module.exports = BookingController;

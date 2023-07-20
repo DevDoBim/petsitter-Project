@@ -1,6 +1,6 @@
 const express = require('express');
-const router = express.Router();
 const authMiddleware = require('../middlewares/auth-middleware.js');
+const router = express.Router();
 
 const BookingController = require('../controllers/bookings.controllers');
 const bookingController = new BookingController();

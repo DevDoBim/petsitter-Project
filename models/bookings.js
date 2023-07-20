@@ -37,11 +37,11 @@ module.exports = (sequelize, DataTypes) => {
       },
       startTime: {
         allowNull: false,
-        type: DataTypes.STRING,
+        type: DataTypes.DATE,
       },
       endTime: {
         allowNull: false,
-        type: DataTypes.STRING,
+        type: DataTypes.DATE,
       },
       createdAt: {
         allowNull: false,

@@ -28,7 +28,6 @@ class UserService {
     //암호화
     const hashPassword = await bcrypt.hash(password, 6);
     await this.userRepository.createUser(email, hashPassword, name, phone, address);
-    return;
   };
   // 로그인 API
   loginUser = async (email, password) => {
@@ -63,7 +62,6 @@ class UserService {
     const hashPassword = newPassword ? await bcrypt.hash(newPassword, 6) : null;
 
     await this.userRepository.updateUser(userId, hashPassword, phone, address);
-    return;
   };
   //회원 탈퇴 api
   deleteUser = async (userId, password, existPassword) => {

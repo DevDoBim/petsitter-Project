@@ -1,4 +1,3 @@
-const { Model } = require('sequelize');
 const { Bookings, Petsitters } = require('../models');
 
 class BookingRepository {
@@ -6,13 +5,18 @@ class BookingRepository {
     await Bookings.findAll({});
   };
 
-  findPetSitterId = async (petSitterId) => {
-    return await Petsitters.findOne({ petSitterId });
+  findBooking = async (petSitterId, userId) => {
+    return await Bookings.findOne({ where: { petSitterId, userId } });
   };
   createBooking = async (userId, petSitterId, startTime, endTime) => {
-    return await Bookings.create(userId, petSitterId, startTime, endTime);
+    return await Bookings.create({ userId, petSitterId, startTime, endTime });
   };
-  updateBooking = async () => {};
-  deleteBooking = async () => {};
+  updateBooking = async (bookingId, startTime, endTime) => {
+    const booking = await Bookings.findByPk(bookingId);
+    return await booking.update({ startTime, endTime }, { where: { bookingId } });
+  };
+  deleteBooking = async (bookingId) => {
+    return await Bookings.destroy({ where: { bookingId } });
+  };
 }
 module.exports = BookingRepository;
